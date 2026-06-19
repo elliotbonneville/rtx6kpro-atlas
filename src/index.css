@@ -1,0 +1,104 @@
+@import 'tailwindcss';
+
+/* ── Copper Fabric: an instrument-panel system grounded in the one material
+   these builds are defined by — copper PCIe interconnect (they have no NVLink).
+   Warm graphite board, copper traces, cool steel for silicon, vermilion only
+   for a real fault. ─────────────────────────────────────────────────────── */
+@theme {
+  --color-board: #14120d;
+  --color-ink: #0e0d09;
+  --color-surface: #1b1810;
+  --color-surface-2: #241f15;
+  --color-line: #38311f;
+  --color-line-bright: #4d4127;
+
+  --color-copper: #cc8350;
+  --color-copper-bright: #e7a872;
+  --color-copper-dim: #7e5333;
+
+  --color-steel: #88abb8;
+  --color-steel-dim: #4f6b73;
+
+  --color-fault: #db5742;
+  --color-good: #93b27a;
+
+  --color-text: #ece4d4;
+  --color-muted: #a0967f;
+  --color-faint: #6c654f;
+
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    background: var(--color-board);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-copper) 35%, transparent);
+    color: var(--color-text);
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-copper-bright);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ── shared utilities ─────────────────────────────────────────────────── */
+@utility nameplate {
+  /* the wide instrument-nameplate treatment for build names + the wordmark */
+  font-family: 'Archivo Expanded', var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-copper);
+}
+
+@utility data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* a faint copper trace ruling, the structural motif reused as a divider */
+@utility trace-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-line-bright) 8%,
+    var(--color-line-bright) 92%,
+    transparent
+  );
+}
