@@ -1,0 +1,87 @@
+import type { Build } from '../../types/build'
+
+export const wrx9016gpu: Build = {
+  id: 'wrx90-16gpu',
+  name: 'WRX90 · 16× · 4-switch',
+  practitioner: 'c-payne',
+  summary:
+    'Sixteen RTX PRO 6000 (mixed Workstation + Server Edition) on a single-socket Threadripper PRO 7955WX (ASRock WRX90 WS EVO) behind four Microchip Switchtec PM50100 switches, four GPUs each — the existence proof that the consumer WRX90 board scales to 16 cards.',
+  sourceUrl: 'https://github.com/local-inference-lab/rtx6kpro/blob/master/hardware/wrx90-cpayne-16gpu-4switch.md',
+  credit: 'c-payne — rtx6kpro',
+
+  gpu: { model: 'RTX PRO 6000 Blackwell (mixed WS + Server)', count: 16, vramGB: 96 },
+  cpu: { model: 'Threadripper PRO 7955WX', sockets: 1, vendor: 'AMD' },
+  motherboard: 'ASRock WRX90 WS EVO',
+
+  topology: {
+    type: 'flat-4-switch',
+    allToAllGBs: null,
+    notes: [
+      'Four PM50100 switches, four GPUs each, all links trained Gen5 x16 under load. Peak 4-pair write ~108 GB/s; no Xid.',
+    ],
+    nodes: [
+      { id: 'cpu', kind: 'cpu', label: 'Threadripper PRO 7955WX' },
+      { id: 'sw1', kind: 'switch', label: 'PM50100 switch 1' },
+      { id: 'sw2', kind: 'switch', label: 'PM50100 switch 2' },
+      { id: 'sw3', kind: 'switch', label: 'PM50100 switch 3' },
+      { id: 'sw4', kind: 'switch', label: 'PM50100 switch 4' },
+      { id: 'g0', kind: 'gpu', label: 'GPU 0' },
+      { id: 'g1', kind: 'gpu', label: 'GPU 1' },
+      { id: 'g2', kind: 'gpu', label: 'GPU 2' },
+      { id: 'g3', kind: 'gpu', label: 'GPU 3' },
+      { id: 'g4', kind: 'gpu', label: 'GPU 4' },
+      { id: 'g5', kind: 'gpu', label: 'GPU 5' },
+      { id: 'g6', kind: 'gpu', label: 'GPU 6' },
+      { id: 'g7', kind: 'gpu', label: 'GPU 7' },
+      { id: 'g8', kind: 'gpu', label: 'GPU 8' },
+      { id: 'g9', kind: 'gpu', label: 'GPU 9' },
+      { id: 'g10', kind: 'gpu', label: 'GPU 10' },
+      { id: 'g11', kind: 'gpu', label: 'GPU 11' },
+      { id: 'g12', kind: 'gpu', label: 'GPU 12' },
+      { id: 'g13', kind: 'gpu', label: 'GPU 13' },
+      { id: 'g14', kind: 'gpu', label: 'GPU 14' },
+      { id: 'g15', kind: 'gpu', label: 'GPU 15' },
+    ],
+    edges: [
+      { id: 'up1', from: 'cpu', to: 'sw1', gen: 5, width: 16, role: 'uplink' },
+      { id: 'up2', from: 'cpu', to: 'sw2', gen: 5, width: 16, role: 'uplink' },
+      { id: 'up3', from: 'cpu', to: 'sw3', gen: 5, width: 16, role: 'uplink' },
+      { id: 'up4', from: 'cpu', to: 'sw4', gen: 5, width: 16, role: 'uplink' },
+      { id: 'a0', from: 'sw1', to: 'g0', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a1', from: 'sw1', to: 'g1', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a2', from: 'sw1', to: 'g2', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a3', from: 'sw1', to: 'g3', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a4', from: 'sw2', to: 'g4', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a5', from: 'sw2', to: 'g5', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a6', from: 'sw2', to: 'g6', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a7', from: 'sw2', to: 'g7', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a8', from: 'sw3', to: 'g8', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a9', from: 'sw3', to: 'g9', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a10', from: 'sw3', to: 'g10', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a11', from: 'sw3', to: 'g11', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a12', from: 'sw4', to: 'g12', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a13', from: 'sw4', to: 'g13', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a14', from: 'sw4', to: 'g14', gen: 5, width: 16, role: 'gpu' },
+      { id: 'a15', from: 'sw4', to: 'g15', gen: 5, width: 16, role: 'gpu' },
+    ],
+  },
+
+  performance: { p2pGBs: 56, latencyUs: 0.8 },
+  stability: {
+    collapse: false,
+    xidErrors: [],
+    notes: 'All Gen5 x16 under load; no Xid; historical collapse resolved.',
+  },
+  software: { os: 'BIOS 12.09', driver: '595.58.03', notes: 'kernel 6.18.24.' },
+
+  pros: [
+    'Proves the single-socket WRX90 WS EVO enumerates 16 cards — the existence proof behind any 8-card build on this board.',
+    'All Gen5 x16.',
+  ],
+  cons: [
+    'Single shared CPU uplink path limits host-RAM bandwidth.',
+    'Mixed GPU editions.',
+    'Extreme BAR address-space pressure on one socket.',
+  ],
+  notes: ['Halving this is the 8-card 2-VS design — same board, same switch silicon.'],
+}

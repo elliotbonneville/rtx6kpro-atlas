@@ -3,11 +3,26 @@ import type { Benchmark } from '../types/benchmark'
 import { ours } from './builds/ours'
 import { luke8x } from './builds/luke-8x'
 import { festrDualTurin } from './builds/festr-dual-turin'
+import { orangezed8x } from './builds/orangezed-8x'
+import { grimulkan8x } from './builds/grimulkan-8x'
+import { wrx90Flat2Switch } from './builds/wrx90-flat-2switch'
+import { wrx9016gpu } from './builds/wrx90-16gpu'
+import { asrockrackTurin16gpu } from './builds/asrockrack-turin-16gpu'
 import { esc8000Broadcom } from './builds/esc8000-broadcom'
 import { benchmarks } from './benchmarks'
 
 // Order is presentation order in the catalog — peers, no ranking implied.
-export const builds: Build[] = [ours, luke8x, festrDualTurin, esc8000Broadcom]
+export const builds: Build[] = [
+  ours,
+  luke8x,
+  festrDualTurin,
+  orangezed8x,
+  grimulkan8x,
+  wrx90Flat2Switch,
+  wrx9016gpu,
+  asrockrackTurin16gpu,
+  esc8000Broadcom,
+]
 
 // The landing build. A default selection, NOT a privileged architecture —
 // every build renders through the same template.
