@@ -40,12 +40,11 @@ export function benchmarksForBuild(buildId: string): Benchmark[] {
   return benchmarks.filter((b) => b.buildId === buildId)
 }
 
-// ── Attribution is structural: a community record cannot ship without a
-// source. The maintainer's own build is the only one allowed a null sourceUrl.
-const MAINTAINER = 'sincerely'
+// ── Attribution is structural: every build links a source so any figure can be
+// traced back. A build without a sourceUrl fails the build.
 for (const b of builds) {
-  if (!b.sourceUrl && b.practitioner !== MAINTAINER) {
-    throw new Error(`Build "${b.id}" is missing a sourceUrl (required for community builds).`)
+  if (!b.sourceUrl) {
+    throw new Error(`Build "${b.id}" is missing a sourceUrl.`)
   }
 }
 for (const bm of benchmarks) {

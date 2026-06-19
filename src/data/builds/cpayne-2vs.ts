@@ -1,8 +1,8 @@
 import type { Build } from '../../types/build'
 
-// The c-payne MEASURED 8-GPU 2-VS-per-chip rig. Distinct from sincerely's
-// planned wrx90-2vs-maxq: this is the actual reference measurement on a
-// 7955WX + Server Edition cards that the 254 GB/s headline comes from.
+// The c-payne MEASURED 8-GPU 2-VS-per-chip rig — the actual reference
+// measurement on a 7955WX + Server Edition cards that the 254 GB/s headline
+// comes from.
 export const cpayne2vs: Build = {
   id: 'cpayne-2vs',
   name: 'c-payne · 8× Server · 2-VS',

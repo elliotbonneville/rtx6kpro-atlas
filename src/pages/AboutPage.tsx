@@ -12,9 +12,9 @@ export function AboutPage() {
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted">
           A reference catalog of RTX PRO 6000 Blackwell local-inference builds, shown as equal peers. There is no
-          privileged reference design here. Every build, community-reported or our own, renders through the same
-          template so you can compare topology, trade-offs, and benchmarks directly rather than reading a vendor's
-          preferred arrangement.
+          privileged reference design here. Every build, whether community-reported or self-reported, renders through
+          the same template so you can compare topology, trade-offs, and benchmarks directly rather than reading a
+          vendor's preferred arrangement.
         </p>
       </header>
 

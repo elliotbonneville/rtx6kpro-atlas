@@ -1,13 +1,13 @@
 import type { Build } from '../../types/build'
 
-// The maintainer's 8-card build. Rich because it's well-documented — but
-// structurally just a peer in the catalog, not a privileged reference.
+// A self-reported community build — well-documented, but structurally just a
+// peer in the catalog, not a privileged reference.
 export const ours: Build = {
   id: 'wrx90-2vs-maxq',
   name: 'sincerely · 8× Max-Q · 2-VS',
   practitioner: 'sincerely',
   summary:
-    'Eight RTX PRO 6000 Max-Q on a single-socket Threadripper PRO, wired through two C-Payne PM50100 switches partitioned into four virtual switches for full Gen5 x16 to every card. Built to serve GLM-5.2 NVFP4 to a household plus dev agents.',
+    'Eight RTX PRO 6000 Max-Q on a single-socket Threadripper PRO, wired through two C-Payne PM50100 switches partitioned into four virtual switches for full Gen5 x16 to every card — a single-socket path to serving GLM-5.2 NVFP4 at full quality without a dual-socket platform.',
   sourceUrl:
     'https://github.com/local-inference-lab/rtx6kpro/blob/master/hardware/wrx90-cpayne-8gpu-2vs-per-chip.md',
   credit: 'sincerely · self-reported (topology per rtx6kpro 2-VS measurement)',
@@ -75,42 +75,22 @@ export const ours: Build = {
   },
 
   pros: [
-    'Keeps the already-owned $15k WRX90 host — ~$5–6k of switches instead of a platform rebuild.',
+    'Reuses a single-socket WRX90 workstation host — roughly $5–6k of switches instead of a dual-socket platform rebuild.',
     'Full Gen5 x16 to all eight cards; 254 GB/s all-to-all, the highest measured on Microchip.',
-    'Single-socket NUMA lets luke’s custom PCIe all-reduce kernel help even at 8 GPUs.',
+    'Single-socket NUMA lets the custom PCIe all-reduce kernel help even at 8 GPUs.',
     'Max-Q’s higher memory clock favors memory-bound decode; power-limiting barely costs anything.',
   ],
   cons: [
     'The 254 GB/s 2-VS layout is non-default — needs jumper + config-tool partitioning, confirmed with C-Payne.',
     'Host RAM (384 GB) is smaller than the ~460 GB NVFP4 model, so cold loads come off disk.',
-    'Single-source topology (rtx6kpro) until the C-Payne consult and burn-in confirm it.',
+    'Single-source topology (rtx6kpro) until independently confirmed.',
     'Eight 96 GB BARs on one socket make BIOS enumeration the real bring-up risk.',
   ],
   notes: [
-    'GLM-5.2 numbers are interpolated for this exact board — the burn-in is the proof.',
+    'GLM-5.2 numbers are interpolated for this board class, not yet measured on this exact config.',
     'No NVLink on any RTX PRO 6000 edition; NVSwitch is baseboard-only. The fabric is PCIe 5.0, permanent.',
   ],
 
-  bom: [
-    { component: '4× RTX PRO 6000 Max-Q (expansion, OEM −2200 @ $11,499.99)', qty: 4, unitCost: 11500, status: 'planned' },
-    { component: '2× C-Payne PM50100 Gen5 switch + MCIO adapters + cables', qty: 1, unitCost: 5750, status: 'planned' },
-    { component: '2× Super Flower Leadex 2800 W + Add2PSU', qty: 1, unitCost: 1800, status: 'planned' },
-    { component: '4-post rack + board/PSU tray + vented GPU shelf', qty: 1, unitCost: 750, status: 'planned' },
-    { component: 'Host-only UPS + switched 240 V PDU', qty: 1, unitCost: 2300, status: 'planned' },
-    { component: 'Circulation fans (exhaust duct / mini-split held in reserve)', qty: 1, unitCost: 175, status: 'planned' },
-  ],
-  costRollup: {
-    incrementalUSD: 11000,
-    fullUSD: 60000,
-    breakdown: [
-      { label: '+4 cards', usd: 46000 },
-      { label: 'RI 7% use tax', usd: 3220 },
-      { label: 'Switches + fabric', usd: 5750 },
-      { label: 'PSUs', usd: 1800 },
-      { label: 'Rack + shelf', usd: 750 },
-      { label: 'UPS + PDU', usd: 2300 },
-    ],
-  },
   cableSchedule: [
     { id: 'u1', kind: 'uplink', from: 'WRX90 slot (root cplx A)', to: 'PM50100 #1 / VS-A', spec: 'MCIO host adapter, x16 Gen5' },
     { id: 'u2', kind: 'uplink', from: 'WRX90 slot (root cplx A)', to: 'PM50100 #1 / VS-B', spec: 'MCIO host adapter, x16 Gen5' },
@@ -122,9 +102,9 @@ export const ours: Build = {
   validationLadder: [
     { rung: 1, name: 'Enumeration', target: 'All 8 at Gen5 x16', metric: 'nvidia-smi link gen/width' },
     { rung: 2, name: 'P2P / fabric', target: '~41 GB/s NCCL bus · 254 GB/s all-to-all · uniform ~55 GB/s P2P', metric: 'nvbandwidth · nccl-tests · p2pmark' },
-    { rung: 3, name: 'Thermal', target: 'Intake ≤ 27 °C · GPU < 80 °C', metric: 'SensorPush, 3-day burn-in' },
-    { rung: 4, name: 'Single-stream serving', target: '~78 tok/s no-MTP · ~130 with MTP · ~3k prefill', metric: 'bench_live.py' },
-    { rung: 5, name: 'Concurrency sweep', target: 'Aggregate climbs toward ~962 tok/s @ 32 concurrent', metric: 'the switch’s headline validation' },
+    { rung: 3, name: 'Thermal', target: 'Intake ≤ 27 °C · GPU < 80 °C', metric: 'thermal probe, sustained load' },
+    { rung: 4, name: 'Single-stream serving', target: '~78 tok/s no-MTP · ~130 with MTP · ~3k prefill', metric: 'decode / prefill benchmark' },
+    { rung: 5, name: 'Concurrency sweep', target: 'Aggregate climbs toward ~962 tok/s @ 32 concurrent', metric: 'multi-stream validation' },
   ],
   biosChecklist: [
     { label: 'MMIOH window 2–4 TB per root complex', detail: 'fit eight 96 GB resizable BARs' },
@@ -144,7 +124,7 @@ export const ours: Build = {
   ],
   cooling: {
     stages: [
-      { trigger: 'Baseline', action: 'Bermed basement as heat sink + circulation fans; measure intake at burn-in' },
+      { trigger: 'Baseline', action: 'Large cool room as heat sink + circulation fans; measure intake under sustained load' },
       { trigger: 'Intake > 27 °C in summer', action: 'Rear-exhaust duct (AC Infinity CLOUDLINE)' },
       { trigger: 'Duct insufficient', action: '1-ton mini-split (last resort)' },
     ],
@@ -163,7 +143,7 @@ export const ours: Build = {
   riskRegister: [
     { risk: 'BIOS enumeration of eight big BARs on one socket', likelihood: 'high', impact: 'high', mitigation: 'Dry-fit on Gen4 risers before switch cabling; MMIOH/SR-IOV/USB4 checklist' },
     { risk: '2-VS partition is non-default', likelihood: 'med', impact: 'med', mitigation: 'Confirm method with C-Payne; 3-board hierarchy (196) as proven fallback' },
-    { risk: 'Cooling equilibrium unproven', likelihood: 'med', impact: 'med', mitigation: 'Measure at burn-in; escalation path held in reserve' },
+    { risk: 'Cooling equilibrium unproven', likelihood: 'med', impact: 'med', mitigation: 'Measure under sustained load; escalation path held in reserve' },
     { risk: 'Host RAM < model size', likelihood: 'low', impact: 'med', mitigation: 'Multithreaded loader; accept slower cold loads or add RAM' },
   ],
 }

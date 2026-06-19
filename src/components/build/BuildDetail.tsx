@@ -210,7 +210,7 @@ export function BuildDetail({ build }: { build: Build }) {
       <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
         <CreditBadge credit={build.credit} sourceUrl={build.sourceUrl} />
         <span className="data text-[11px] text-faint">
-          {build.practitioner === 'sincerely' ? 'self-reported' : 'community-reported · rtx6kpro'}
+          {build.credit?.toLowerCase().includes('self-reported') ? 'self-reported' : 'community-reported · rtx6kpro'}
         </span>
       </footer>
     </article>

@@ -66,5 +66,5 @@ export const esc8000Broadcom: Build = {
     'Broadcom posted-write collapse drops fabric bandwidth 93% under common all-reduce patterns — no fix.',
     'Proprietary server platform; ~$13k complete system.',
   ],
-  notes: ['Why sincerely’s build avoids Broadcom baseboards entirely and uses Microchip switches.'],
+  notes: ['Why builders avoid Broadcom baseboards for multi-GPU P2P and prefer Microchip switches.'],
 }

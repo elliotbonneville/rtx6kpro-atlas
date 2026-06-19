@@ -1,4 +1,4 @@
-// The unified data model. Every build — community or the maintainer's own —
+// The unified data model. Every build — community-reported or self-reported —
 // is a peer: same shape, same template, same prominence. All view-bearing
 // fields are optional so sparse records render gracefully alongside rich ones.
 
@@ -159,7 +159,7 @@ export interface Build {
   name: string
   practitioner: string
   summary: string
-  /** REQUIRED for community builds; null only for the maintainer's own. */
+  /** Source for the build's claims. Self-reported builds may cite a reference. */
   sourceUrl?: string | null
   credit?: string | null
 

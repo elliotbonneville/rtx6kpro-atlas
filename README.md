@@ -6,7 +6,7 @@ There is no "reference" build: each entry uses the same template and data shape.
 
 ## Data provenance & attribution
 
-Build and benchmark data is drawn from the community **[`local-inference-lab/rtx6kpro`](https://github.com/local-inference-lab/rtx6kpro)** repo (itself synthesized from a practitioner Discord) and from **sincerely's** own build notes. Every record carries a `sourceUrl` and a practitioner `credit` — attribution is a structural requirement of the data model, enforced at build time. Credit to luke, Festr, orangezed, Grimulkan, and the other practitioners whose measurements this catalogs.
+Build and benchmark data is drawn from the community **[`local-inference-lab/rtx6kpro`](https://github.com/local-inference-lab/rtx6kpro)** repo (itself synthesized from a practitioner Discord) and from self-reported build notes. Every record carries a `sourceUrl` and a practitioner `credit` — attribution is a structural requirement of the data model, enforced at build time. Credit to luke, Festr, orangezed, Grimulkan, and the other practitioners whose measurements this catalogs.
 
 ## Develop
 
