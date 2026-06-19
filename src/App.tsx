@@ -4,7 +4,6 @@ import { Nav } from './components/layout/Nav'
 import { Footer } from './components/layout/Footer'
 import { CatalogPage } from './pages/CatalogPage'
 import { BuildView } from './pages/BuildView'
-import { defaultBuildId } from './data'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -21,8 +20,8 @@ export default function App() {
       <Nav />
       <div className="flex-1">
         <Routes>
-          <Route path="/" element={<BuildView idOverride={defaultBuildId} isHome />} />
-          <Route path="/builds" element={<CatalogPage />} />
+          <Route path="/" element={<CatalogPage />} />
+          <Route path="/builds" element={<Navigate to="/" replace />} />
           <Route path="/builds/:id" element={<BuildView />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

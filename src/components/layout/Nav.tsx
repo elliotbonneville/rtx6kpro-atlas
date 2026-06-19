@@ -12,7 +12,8 @@ export function Nav() {
         </Link>
         <nav className="flex items-center gap-5">
           <NavLink
-            to="/builds"
+            to="/"
+            end
             className={({ isActive }) =>
               `data text-xs uppercase tracking-[0.16em] transition-colors hover:text-copper-bright ${
                 isActive ? 'text-copper-bright' : 'text-muted'
