@@ -1,4 +1,3 @@
-import { builds } from '../data'
 import { ComparisonGrid } from '../components/build/ComparisonGrid'
 
 export function ComparePage() {
@@ -10,8 +9,8 @@ export function ComparePage() {
           Weigh them side by side
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted">
-          All {builds.length} builds on one bench — fabric, all-to-all and P2P bandwidth, and best
-          measured decode. Sort any column to find where the trade-offs land.
+          Every build on one bench — fabric, all-to-all and P2P bandwidth, and best measured decode. Sort any column
+          to find where the trade-offs land.
         </p>
       </header>
 

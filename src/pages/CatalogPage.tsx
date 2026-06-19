@@ -101,10 +101,9 @@ export function CatalogPage() {
         <p className="eyebrow">Community catalog</p>
         <h1 className="nameplate mt-3 text-3xl leading-[0.95] text-text sm:text-4xl">Blackwell builds, side by side</h1>
         <p className="mt-4 text-base leading-relaxed text-muted">
-          A reference catalog of {builds.length} RTX PRO 6000 Blackwell local-inference builds documented by the
-          community — direct-attach, switched, and the cautionary ones. Each is shown as an equal peer, with its
-          specs, trade-offs, benchmarks, and a visualized PCIe fabric, so you can browse and weigh them against each
-          other.
+          A reference catalog of RTX PRO 6000 Blackwell local-inference builds documented by the community —
+          direct-attach, switched, and the cautionary ones. Each is shown as an equal peer, with its specs,
+          trade-offs, benchmarks, and a visualized PCIe fabric, so you can browse and weigh them against each other.
         </p>
       </header>
 

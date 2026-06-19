@@ -30,3 +30,13 @@ Deploy is via `.github/workflows/deploy.yml` (rsync `dist/` to a server), **not 
 ## Adding a build
 
 Add a typed module under `src/data/builds/`, conforming to the `Build` type in `src/types/build.ts`, then register it in `src/data/index.ts`. Community records must include `sourceUrl` + `credit`. Express the PCIe fabric as topology nodes/edges so the visualizer renders it automatically — no per-build drawing code.
+
+## Mirroring the repo
+
+The catalog tracks the `local-inference-lab/rtx6kpro` repo as it grows — nothing hard-codes the build count; it's derived from the data and unbounded by design. To check the catalog against the live repo:
+
+```bash
+npm run sync
+```
+
+This cross-references each build's `sourceUrl` against the repo's current file tree and reports which documented configs are covered and which are new (candidates to add under `src/data/builds/`). Reference and analysis pages are skipped. The repo's hardware pages are prose rather than structured data, so new builds are still curated into typed records — the sync check is what surfaces drift.
