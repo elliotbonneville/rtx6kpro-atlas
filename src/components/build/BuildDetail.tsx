@@ -2,7 +2,7 @@ import type { Build } from '../../types/build'
 import type { Benchmark } from '../../types/benchmark'
 import { benchmarksForBuild } from '../../data'
 import { dash, gbs, usd, watts, toks, ctx } from '../../lib/format'
-import { Panel, SpecGrid, Chip, CreditBadge, DataTable, type Column } from '../common/ui'
+import { Panel, SpecGrid, Chip, CreditBadge, SourceLink, DataTable, type Column } from '../common/ui'
 import { TopologyDiagram } from '../topology/TopologyDiagram'
 import { ValidationLadder } from './ValidationLadder'
 import { RackElevation } from './RackElevation'
@@ -28,6 +28,15 @@ export function BuildDetail({ build }: { build: Build }) {
           <Chip>{build.cpu.sockets === 1 ? 'single-socket' : `${build.cpu.sockets}-socket`}</Chip>
           <Chip tone={collapse ? 'fault' : 'steel'}>{collapse ? 'posted-write collapse' : `${gbs(t.allToAllGBs)} all-to-all`}</Chip>
         </div>
+        <p className="data mt-4 text-xs text-faint">
+          Source:{' '}
+          {build.sourceUrl ? (
+            <SourceLink href={build.sourceUrl}>{build.sourceUrl.split('/').pop()}</SourceLink>
+          ) : (
+            'self-reported build notes'
+          )}
+          {build.credit ? <span> · {build.credit}</span> : null}
+        </p>
       </header>
 
       <Panel label="PCIe Fabric" meta={t.type}>
@@ -201,7 +210,7 @@ export function BuildDetail({ build }: { build: Build }) {
       <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
         <CreditBadge credit={build.credit} sourceUrl={build.sourceUrl} />
         <span className="data text-[11px] text-faint">
-          {build.sourceUrl ? 'community-reported · rtx6kpro' : 'maintainer build notes'}
+          {build.practitioner === 'sincerely' ? 'self-reported' : 'community-reported · rtx6kpro'}
         </span>
       </footer>
     </article>

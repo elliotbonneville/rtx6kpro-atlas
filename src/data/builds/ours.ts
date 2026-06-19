@@ -8,8 +8,9 @@ export const ours: Build = {
   practitioner: 'sincerely',
   summary:
     'Eight RTX PRO 6000 Max-Q on a single-socket Threadripper PRO, wired through two C-Payne PM50100 switches partitioned into four virtual switches for full Gen5 x16 to every card. Built to serve GLM-5.2 NVFP4 to a household plus dev agents.',
-  sourceUrl: null,
-  credit: 'sincerely — build notes',
+  sourceUrl:
+    'https://github.com/local-inference-lab/rtx6kpro/blob/master/hardware/wrx90-cpayne-8gpu-2vs-per-chip.md',
+  credit: 'sincerely · self-reported (topology per rtx6kpro 2-VS measurement)',
 
   gpu: { model: 'RTX PRO 6000 Blackwell Max-Q', edition: 'Max-Q', count: 8, vramGB: 96, powerLimitW: 250 },
   cpu: { model: 'Threadripper PRO 9985WX', sockets: 1, vendor: 'AMD' },

@@ -49,17 +49,21 @@ export function BuildCard({ build }: { build: Build }) {
           {build.pros?.[0] && (
             <p className="flex gap-2 text-muted">
               <span className="text-good">+</span>
-              <span className="line-clamp-1">{build.pros[0]}</span>
+              <span>{build.pros[0]}</span>
             </p>
           )}
           {build.cons?.[0] && (
             <p className="flex gap-2 text-muted">
               <span className="text-fault">−</span>
-              <span className="line-clamp-1">{build.cons[0]}</span>
+              <span>{build.cons[0]}</span>
             </p>
           )}
         </div>
       )}
+
+      <div className="mt-4 border-t border-line pt-3">
+        <span className="data text-[11px] text-faint">{build.credit ?? 'self-reported'}</span>
+      </div>
     </Link>
   )
 }
@@ -68,7 +72,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone?: 'fa
   return (
     <div className="min-w-0">
       <dt className="data text-[9px] uppercase tracking-[0.14em] text-faint">{label}</dt>
-      <dd className={`data mt-0.5 truncate text-sm ${tone === 'fault' ? 'text-fault' : 'text-copper-bright'}`}>{value}</dd>
+      <dd className={`data mt-0.5 text-sm ${tone === 'fault' ? 'text-fault' : 'text-copper-bright'}`}>{value}</dd>
     </div>
   )
 }

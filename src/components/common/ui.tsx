@@ -27,9 +27,7 @@ export function SpecGrid({ items }: { items: { label: string; value: ReactNode }
       {items.map((it) => (
         <div key={it.label} className="min-w-0">
           <dt className="data text-[10px] uppercase tracking-[0.16em] text-faint">{it.label}</dt>
-          <dd className="data mt-1 truncate text-sm text-text" title={typeof it.value === 'string' ? it.value : undefined}>
-            {it.value}
-          </dd>
+          <dd className="data mt-1 text-sm leading-snug text-text break-words">{it.value}</dd>
         </div>
       ))}
     </dl>

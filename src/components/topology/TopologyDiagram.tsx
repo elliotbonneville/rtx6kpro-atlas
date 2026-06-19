@@ -60,25 +60,28 @@ export function TopologyDiagram({ topology }: { topology: Topology }) {
   const { layout, containers } = view
   const byId = layout.byId
 
-  function anchor(n: PlacedNode, towardY: number) {
+  // Anchor each edge along the edge of the node nearest its target, so a CPU
+  // fanning to several switches spreads cleanly along its underside instead of
+  // all leaving from one point (which produced long sweeping curves).
+  function anchor(n: PlacedNode, ox: number, oy: number) {
     const s = SIZE[n.kind]
-    if (Math.abs(towardY - n.y) < 1) return { x: n.x, y: n.y }
-    return { x: n.x, y: towardY > n.y ? n.y + s.h / 2 : n.y - s.h / 2 }
+    if (Math.abs(oy - n.y) < 1) {
+      return { x: ox > n.x ? n.x + s.w / 2 : n.x - s.w / 2, y: n.y }
+    }
+    const x = Math.max(n.x - s.w / 2 + 10, Math.min(n.x + s.w / 2 - 10, ox))
+    return { x, y: oy > n.y ? n.y + s.h / 2 : n.y - s.h / 2 }
   }
 
   function edgePath(e: TopoEdge): string {
     const a = byId[e.from]
     const b = byId[e.to]
     if (!a || !b) return ''
+    const s = anchor(a, b.x, b.y)
+    const t = anchor(b, a.x, a.y)
     if (Math.abs(a.y - b.y) < 1) {
-      const [L, R] = a.x < b.x ? [a, b] : [b, a]
-      const sx = L.x + SIZE[L.kind].w / 2
-      const ex = R.x - SIZE[R.kind].w / 2
-      const my = L.y - 26
-      return `M ${sx} ${L.y} C ${(sx + ex) / 2} ${my}, ${(sx + ex) / 2} ${my}, ${ex} ${R.y}`
+      const mx = (s.x + t.x) / 2
+      return `M ${s.x} ${s.y} C ${mx} ${s.y}, ${mx} ${t.y}, ${t.x} ${t.y}`
     }
-    const s = anchor(a, b.y)
-    const t = anchor(b, a.y)
     const my = (s.y + t.y) / 2
     return `M ${s.x} ${s.y} C ${s.x} ${my}, ${t.x} ${my}, ${t.x} ${t.y}`
   }
@@ -185,7 +188,7 @@ export function TopologyDiagram({ topology }: { topology: Topology }) {
       </svg>
 
       {/* instrument readout + legend */}
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3">
+      <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3 sm:flex-row sm:items-center sm:justify-between">
         <Readout hover={hover} topology={topology} />
         <Legend />
       </div>
@@ -268,7 +271,7 @@ function Readout({ hover, topology }: { hover: Hover; topology: Topology }) {
   } else {
     text = `${topology.type}${topology.allToAllGBs ? `  ·  ${gbs(topology.allToAllGBs)} all-to-all` : '  ·  collapse-affected fabric'}`
   }
-  return <p className="data min-w-0 truncate text-xs text-muted">{text}</p>
+  return <p className="data text-xs leading-snug text-muted">{text}</p>
 }
 
 function Legend() {

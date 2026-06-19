@@ -13,12 +13,12 @@ import { benchmarks } from './benchmarks'
 
 // Order is presentation order in the catalog — peers, no ranking implied.
 export const builds: Build[] = [
-  ours,
   luke8x,
   festrDualTurin,
+  ours,
+  wrx90Flat2Switch,
   orangezed8x,
   grimulkan8x,
-  wrx90Flat2Switch,
   wrx9016gpu,
   asrockrackTurin16gpu,
   esc8000Broadcom,
