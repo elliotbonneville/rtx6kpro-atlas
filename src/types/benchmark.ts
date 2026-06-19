@@ -4,20 +4,18 @@ export type MetricType = 'single-stream-decode' | 'batched' | 'prefill'
 
 export interface Benchmark {
   id: string
-  /** FK -> Build.id */
-  buildId: string
+  buildId?: string | null      // set when tied to a documented build; null for generic-hardware records
+  hardware: string             // e.g. '8× RTX PRO 6000'
   model: string
   modelSizeB?: number | null
   quant: Quant
   engine: Engine
-  parallelism?: string | null // e.g. "TP8", "EP8 + DCP8"
+  parallelism?: string | null
   gpuCount: number
   metricType: MetricType
   contextTokens?: number | null
   mtp?: boolean | null
-  /** tok/s (per-stream for decode/prefill; aggregate for batched) */
-  throughput?: number | null
-  /** REQUIRED for community records. */
+  throughput?: number | null   // tok/s (per-stream for decode/prefill, aggregate for batched)
   sourceUrl?: string | null
   credit?: string | null
   notes?: string | null

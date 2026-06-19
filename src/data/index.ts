@@ -8,6 +8,8 @@ import { grimulkan8x } from './builds/grimulkan-8x'
 import { wrx90Flat2Switch } from './builds/wrx90-flat-2switch'
 import { wrx9016gpu } from './builds/wrx90-16gpu'
 import { asrockrackTurin16gpu } from './builds/asrockrack-turin-16gpu'
+import { cpayne2vs } from './builds/cpayne-2vs'
+import { cpayneHierarchy } from './builds/cpayne-hierarchy'
 import { esc8000Broadcom } from './builds/esc8000-broadcom'
 import { benchmarks } from './benchmarks'
 
@@ -16,6 +18,8 @@ export const builds: Build[] = [
   luke8x,
   festrDualTurin,
   ours,
+  cpayne2vs,
+  cpayneHierarchy,
   wrx90Flat2Switch,
   orangezed8x,
   grimulkan8x,
@@ -48,7 +52,7 @@ for (const bm of benchmarks) {
   if (!bm.sourceUrl) {
     throw new Error(`Benchmark "${bm.id}" is missing a sourceUrl.`)
   }
-  if (!buildsById[bm.buildId]) {
+  if (bm.buildId && !buildsById[bm.buildId]) {
     throw new Error(`Benchmark "${bm.id}" references unknown build "${bm.buildId}".`)
   }
 }
