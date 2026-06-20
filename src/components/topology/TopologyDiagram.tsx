@@ -3,12 +3,19 @@ import type { Topology, TopoEdge, NodeKind } from '../../types/build'
 import { layoutTopology, type PlacedNode } from '../../lib/layout'
 import { gbs, lane } from '../../lib/format'
 
-const SIZE: Record<NodeKind, { w: number; h: number }> = {
-  cpu: { w: 168, h: 46 },
-  'root-complex': { w: 116, h: 34 },
-  switch: { w: 124, h: 40 },
-  'virtual-switch': { w: 80, h: 30 },
-  gpu: { w: 88, h: 42 },
+// Minimum box dims per kind; width grows to fit the label so text never spills
+// the outline. charW approximates the label font's per-character width.
+const MIN: Record<NodeKind, { w: number; h: number; charW: number }> = {
+  cpu: { w: 168, h: 46, charW: 8 },
+  'root-complex': { w: 116, h: 34, charW: 6.9 },
+  switch: { w: 124, h: 40, charW: 6.9 },
+  'virtual-switch': { w: 80, h: 30, charW: 6.2 },
+  gpu: { w: 88, h: 42, charW: 6.9 },
+}
+
+function sizeOf(n: { kind: NodeKind; label: string }) {
+  const m = MIN[n.kind]
+  return { w: Math.max(m.w, Math.round(n.label.length * m.charW) + 28), h: m.h }
 }
 
 const EDGE_COLOR: Record<TopoEdge['role'], string> = {
@@ -44,13 +51,11 @@ export function TopologyDiagram({ topology }: { topology: Topology }) {
     const containers = [...containerIds].map((id) => {
       const meta = topology.nodes.find((n) => n.id === id)
       const kids = layout.nodes.filter((n) => n.parentId === id)
-      const xs = kids.map((k) => k.x)
-      const ys = kids.map((k) => k.y)
       const pad = 16
-      const x0 = Math.min(...xs) - SIZE['virtual-switch'].w / 2 - pad
-      const x1 = Math.max(...xs) + SIZE['virtual-switch'].w / 2 + pad
-      const y0 = Math.min(...ys) - SIZE['virtual-switch'].h / 2 - pad - 14
-      const y1 = Math.max(...ys) + SIZE['virtual-switch'].h / 2 + pad
+      const x0 = Math.min(...kids.map((k) => k.x - sizeOf(k).w / 2)) - pad
+      const x1 = Math.max(...kids.map((k) => k.x + sizeOf(k).w / 2)) + pad
+      const y0 = Math.min(...kids.map((k) => k.y - sizeOf(k).h / 2)) - pad - 14
+      const y1 = Math.max(...kids.map((k) => k.y + sizeOf(k).h / 2)) + pad
       return { id, label: meta?.label ?? id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 }
     })
 
@@ -64,7 +69,7 @@ export function TopologyDiagram({ topology }: { topology: Topology }) {
   // fanning to several switches spreads cleanly along its underside instead of
   // all leaving from one point (which produced long sweeping curves).
   function anchor(n: PlacedNode, ox: number, oy: number) {
-    const s = SIZE[n.kind]
+    const s = sizeOf(n)
     if (Math.abs(oy - n.y) < 1) {
       return { x: ox > n.x ? n.x + s.w / 2 : n.x - s.w / 2, y: n.y }
     }
@@ -207,7 +212,7 @@ function NodeShape({
   onEnter: () => void
   onLeave: () => void
 }) {
-  const s = SIZE[node.kind]
+  const s = sizeOf(node)
   const x = node.x - s.w / 2
   const y = node.y - s.h / 2
   const style = nodeStyle(node.kind)
