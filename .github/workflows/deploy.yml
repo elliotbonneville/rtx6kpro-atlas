@@ -1,44 +1,45 @@
-name: Deploy
-
-# Hosting target not yet wired — see README. To enable, set the repo secrets
-# (SSH_PRIVATE_KEY, SERVER_IP, DEPLOY_USER, DEPLOY_PATH) and remove the `if: false` guards.
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    if: false # TODO: enable once a public host/domain is chosen
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+# Allow one concurrent deployment; don't cancel an in-progress production deploy.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # SPA fallback: GitHub Pages serves 404.html for unknown paths, so a copy
+      # of index.html keeps client-side routes (deep links / refresh) working.
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build site
-        run: npm run build
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to server
-        run: |
-          rsync -avz --delete dist/ ${{ secrets.DEPLOY_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_PATH }}/
-
-      - name: Cleanup
-        if: always()
-        run: rm -f ~/.ssh/id_rsa
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

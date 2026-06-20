@@ -1,6 +1,5 @@
 import type { Build } from '../types/build'
 import type { Benchmark } from '../types/benchmark'
-import { ours } from './builds/ours'
 import { luke8x } from './builds/luke-8x'
 import { festrDualTurin } from './builds/festr-dual-turin'
 import { orangezed8x } from './builds/orangezed-8x'
@@ -17,7 +16,6 @@ import { benchmarks } from './benchmarks'
 export const builds: Build[] = [
   luke8x,
   festrDualTurin,
-  ours,
   cpayne2vs,
   cpayneHierarchy,
   wrx90Flat2Switch,
@@ -28,9 +26,8 @@ export const builds: Build[] = [
   esc8000Broadcom,
 ]
 
-// The landing build. A default selection, NOT a privileged architecture —
-// every build renders through the same template.
-export const defaultBuildId = ours.id
+// Fallback build id when the URL has none. Just the first in the list.
+export const defaultBuildId = builds[0].id
 
 export const buildsById: Record<string, Build> = Object.fromEntries(
   builds.map((b) => [b.id, b]),
