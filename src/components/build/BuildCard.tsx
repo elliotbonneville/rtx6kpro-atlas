@@ -62,7 +62,7 @@ export function BuildCard({ build }: { build: Build }) {
       )}
 
       <div className="mt-4 border-t border-line pt-3">
-        <span className="data text-[11px] text-faint">{build.credit ?? 'self-reported'}</span>
+        <span className="data text-[11px] text-faint">{build.credit ?? 'rtx6kpro'}</span>
       </div>
     </Link>
   )

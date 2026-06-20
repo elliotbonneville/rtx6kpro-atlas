@@ -33,7 +33,7 @@ export function BuildDetail({ build }: { build: Build }) {
           {build.sourceUrl ? (
             <SourceLink href={build.sourceUrl}>{build.sourceUrl.split('/').pop()}</SourceLink>
           ) : (
-            'self-reported build notes'
+            'rtx6kpro'
           )}
           {build.credit ? <span> · {build.credit}</span> : null}
         </p>
@@ -209,9 +209,7 @@ export function BuildDetail({ build }: { build: Build }) {
 
       <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6">
         <CreditBadge credit={build.credit} sourceUrl={build.sourceUrl} />
-        <span className="data text-[11px] text-faint">
-          {build.credit?.toLowerCase().includes('self-reported') ? 'self-reported' : 'community-reported · rtx6kpro'}
-        </span>
+        <span className="data text-[11px] text-faint">community-reported · rtx6kpro</span>
       </footer>
     </article>
   )

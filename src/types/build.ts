@@ -1,6 +1,6 @@
-// The unified data model. Every build — community-reported or self-reported —
-// is a peer: same shape, same template, same prominence. All view-bearing
-// fields are optional so sparse records render gracefully alongside rich ones.
+// The unified data model. Every build is a community-documented peer: same
+// shape, same template, same prominence. All view-bearing fields are optional
+// so sparse records render gracefully alongside rich ones.
 
 export type PcieGen = 4 | 5
 export type LaneWidth = 4 | 8 | 16
@@ -159,7 +159,7 @@ export interface Build {
   name: string
   practitioner: string
   summary: string
-  /** Source for the build's claims. Self-reported builds may cite a reference. */
+  /** Source for the build's claims — the community record it was documented from. */
   sourceUrl?: string | null
   credit?: string | null
 

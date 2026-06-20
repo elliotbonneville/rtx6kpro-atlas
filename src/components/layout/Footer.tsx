@@ -12,7 +12,7 @@ export function Footer() {
           >
             rtx6kpro
           </a>{' '}
-          repo — itself synthesized from a practitioner Discord — and from build notes. Every record links its
+          repo — itself synthesized from a practitioner Discord. Every record links its
           source. Credit to <span className="text-text">luke, Festr, orangezed, Grimulkan</span>, and the
           practitioners whose measurements this catalogs.
         </p>

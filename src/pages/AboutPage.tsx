@@ -12,9 +12,9 @@ export function AboutPage() {
         </h1>
         <p className="mt-4 text-base leading-relaxed text-muted">
           A reference catalog of RTX PRO 6000 Blackwell local-inference builds, shown as equal peers. There is no
-          privileged reference design here. Every build, whether community-reported or self-reported, renders through
-          the same template so you can compare topology, trade-offs, and benchmarks directly rather than reading a
-          vendor's preferred arrangement.
+          privileged reference design here. Every build is community-documented and renders through the same template
+          so you can compare topology, trade-offs, and benchmarks directly rather than reading a vendor's preferred
+          arrangement.
         </p>
       </header>
 
@@ -43,8 +43,8 @@ export function AboutPage() {
           <p className="text-sm leading-relaxed text-muted">
             The data is drawn from the community repository{' '}
             <SourceLink href={REPO_URL}>local-inference-lab/rtx6kpro</SourceLink>, itself synthesized from a
-            practitioner Discord, supplemented by self-reported build notes. Every build and every benchmark links
-            its source, so any figure can be traced back and checked by hand. Attribution is not a courtesy here; it
+            practitioner Discord. Every build and every benchmark links its source, so any figure can be traced back
+            and checked by hand. Attribution is not a courtesy here; it
             is a structural requirement, enforced at build time. A community record without a source URL fails the
             build. Read the numbers as community-reported rather than independently re-measured. They reflect what
             practitioners observed on their own hardware, under their own conditions, and the linked source is the
