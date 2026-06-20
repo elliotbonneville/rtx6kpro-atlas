@@ -18,6 +18,7 @@ export const wrx90Flat2Switch: Build = {
     allToAllGBs: 162,
     notes: [
       'Default 1-up/5-down switch config — plug-and-play. Cross-switch traffic funnels through the two CPU uplinks.',
+      'Upstream: x16 per chip (two x16 host uplinks total). Same two PM50100s as the 2-VS layout, just un-partitioned — half the upstream, hence 162 vs 254.',
     ],
     nodes: [
       { id: 'cpu', kind: 'cpu', label: 'Threadripper PRO 7955WX' },

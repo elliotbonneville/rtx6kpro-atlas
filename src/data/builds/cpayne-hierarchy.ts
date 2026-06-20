@@ -24,6 +24,7 @@ export const cpayneHierarchy: Build = {
     allToAllGBs: 196,
     notes: [
       'One root PM50100 with two leaf PM50100; four GPUs per leaf. Inter-leaf traffic is routed by the root switch, so it never hits the CPU root ports.',
+      'Upstream: each root switch presents a single x16 to its CPU root port; the leaves uplink to the root. The x16 root link only caps host-RAM bandwidth — inter-GPU traffic stays in the fabric.',
       'Uniform bandwidth across every topology tier (PIX, PXB, NODE) — single NUMA node eliminates cross-NUMA penalties.',
       'Custom PCIe one-shot all-reduce crosses over NCCL at 120 KB (1.4–4.3× advantage for 1–120 KB messages).',
     ],

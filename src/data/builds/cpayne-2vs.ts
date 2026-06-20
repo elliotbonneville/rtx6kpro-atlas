@@ -22,6 +22,7 @@ export const cpayne2vs: Build = {
     allToAllGBs: 254,
     notes: [
       'Each PM50100 is partitioned into two virtual switches (4 logical switches, 4 uplinks total).',
+      'Upstream: 2× x16 per chip (x32) — four x16 host uplinks total. That doubled upstream is what lifts all-to-all to 254 vs the flat layout’s single-x16-per-chip 162.',
       'V1 (recommended) lands each VS on a separate CPU IOD quadrant Q0–Q3 — 254 GB/s all-to-all. V2 (Q0+Q3 split) drops to 225; V3 (concentrated Q0/Q3) to 213.',
       'Single-pair P2P writes measure 56.3 GB/s on every variant; no collapse on any wiring.',
     ],

@@ -18,6 +18,7 @@ export const esc8000Broadcom: Build = {
     allToAllGBs: null,
     notes: [
       'Each Broadcom PEX890xx split into two virtual switches, two GPUs each, no root switch.',
+      'Upstream: 2× x16 per chip (x32) — the same doubled-upstream idea as the Microchip 2-VS, but the Broadcom fabric collapses posted writes routed through it.',
       'Posted-write collapse: bandwidth drops 37 → 2.7 GB/s when two GPUs on a VS write to different CPU roots. No driver/IOMMU fix.',
     ],
     nodes: [

@@ -19,6 +19,7 @@ export const asrockrackTurin16gpu: Build = {
     allToAllGBs: 204,
     notes: [
       'Four PM50100, four GPUs each; all Gen5 x16. 204 GB/s all-to-all = 91% of the 224 GB/s theoretical ceiling. 8-GPU subset 187–190 GB/s.',
+      'Upstream: x16 per switch (four x16 host uplinks total).',
     ],
     nodes: [
       { id: 'cpu', kind: 'cpu', label: 'EPYC 9575F (Turin)', meta: { lanes: '128 PCIe 5.0' } },

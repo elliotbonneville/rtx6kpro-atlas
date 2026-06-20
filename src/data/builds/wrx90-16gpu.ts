@@ -18,6 +18,7 @@ export const wrx9016gpu: Build = {
     allToAllGBs: null,
     notes: [
       'Four PM50100 switches, four GPUs each, all links trained Gen5 x16 under load. Peak 4-pair write ~108 GB/s; no Xid.',
+      'Upstream: x16 per switch (four x16 host uplinks total).',
     ],
     nodes: [
       { id: 'cpu', kind: 'cpu', label: 'Threadripper PRO 7955WX' },
