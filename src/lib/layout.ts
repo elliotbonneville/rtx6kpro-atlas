@@ -77,22 +77,50 @@ export function layoutTopology(topo: Topology): TopoLayout {
     rows[row].push({ ...n, x: 0, y: row * ROW_H + PAD, row })
   }
 
-  // order each row top-down by barycenter of upstream (lower-rank) neighbours
-  const xIndex = new Map<string, number>() // ordering index within row
+  // Order each row top-down by the barycenter of its upstream neighbours, but
+  // keep same-parent siblings (a switch's virtual switches) contiguous — even
+  // when their uplinks land on non-adjacent quadrants — so each switch's
+  // container box stays tight and never overlaps a neighbour's.
+  const xIndex = new Map<string, number>()
+  const groupKey = (n: PlacedNode) => n.parentId ?? n.id
   rows.forEach((rowNodes, ri) => {
     if (ri === 0) {
       rowNodes.forEach((n, i) => xIndex.set(n.id, i))
-    } else {
-      const score = (n: PlacedNode): number => {
-        const ups = [...(neighbours.get(n.id) ?? [])].filter(
-          (m) => (rank.get(m) ?? 0) < rank.get(n.id)!,
-        )
-        if (ups.length === 0) return xIndex.get(n.id) ?? 0
-        return ups.reduce((s, m) => s + (xIndex.get(m) ?? 0), 0) / ups.length
-      }
-      rowNodes.sort((a, b) => score(a) - score(b))
-      rowNodes.forEach((n, i) => xIndex.set(n.id, i))
+      return
     }
+    const scoreOf = new Map<string, number>()
+    for (const n of rowNodes) {
+      const ups = [...(neighbours.get(n.id) ?? [])].filter(
+        (m) => (rank.get(m) ?? 0) < rank.get(n.id)!,
+      )
+      scoreOf.set(
+        n.id,
+        ups.length === 0
+          ? (xIndex.get(n.id) ?? 0)
+          : ups.reduce((s, m) => s + (xIndex.get(m) ?? 0), 0) / ups.length,
+      )
+    }
+    // mean score per sibling-group, so groups order by their collective position
+    const sum = new Map<string, number>()
+    const count = new Map<string, number>()
+    for (const n of rowNodes) {
+      const k = groupKey(n)
+      sum.set(k, (sum.get(k) ?? 0) + scoreOf.get(n.id)!)
+      count.set(k, (count.get(k) ?? 0) + 1)
+    }
+    const groupMean = (k: string) => sum.get(k)! / count.get(k)!
+    rowNodes.sort((a, b) => {
+      const ka = groupKey(a)
+      const kb = groupKey(b)
+      if (ka !== kb) {
+        const ga = groupMean(ka)
+        const gb = groupMean(kb)
+        if (ga !== gb) return ga - gb
+        return ka < kb ? -1 : 1 // deterministic tie-break keeps groups intact
+      }
+      return scoreOf.get(a.id)! - scoreOf.get(b.id)!
+    })
+    rowNodes.forEach((n, i) => xIndex.set(n.id, i))
   })
 
   const maxCount = Math.max(...rows.map((r) => r.length), 1)
